@@ -1,0 +1,26 @@
+{
+    "nome": "teste",
+    "angulo_inicial": 0,
+    "notas": [
+        {
+            "id": "C5",
+            "proximo_angulo": 15
+        },
+        {
+            "id": "D5",
+            "proximo_angulo": 30
+        },
+        {
+            "id": "E5",
+            "proximo_angulo": 45
+        },
+        {
+            "id": "F5",
+            "proximo_angulo": 60
+        },
+        {
+            "id": "G5",
+            "proximo_angulo": 75
+        }
+    ]
+}
