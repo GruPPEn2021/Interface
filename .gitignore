@@ -1,0 +1,22 @@
+#ignora arquivos de configuração do vscode
+*/.vscode*
+
+#ignora arquivos de cache do python
+*__pycache__/
+*__pycache__/*
+
+# ignora os presets de notas geradas pelo programa
+resources/presets/notas/*
+
+# ignora os presets de acelerômetero geradas pelo programa
+resources/presets/acelerometero/*
+
+# ignora os resultados do build
+output/*
+output/*
+
+#ignora executáveis
+*.exe
+
+# ignora arquivos gerados pela abertura de imagens no Windows
+*Thumbs.db
