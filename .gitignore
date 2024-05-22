@@ -21,9 +21,5 @@ output/*
 # ignora arquivos gerados pela abertura de imagens no Windows
 *Thumbs.db
 
-#ignrore InstallForge
-InstallForge/*
-
-#ignore auto_py_to_exe_config
-auto_py_to_exe_config.json
-
+#ignora arquivos do tipo desktop.ini
+*desktop.ini
