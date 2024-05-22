@@ -1,0 +1,6 @@
+{
+    "ambiente_eletronico": "teste",
+    "ambiente_midi": "producao",
+    "ambiente_file_service": "dev",
+    "app_name": "Contato"
+}
