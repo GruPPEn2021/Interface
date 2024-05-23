@@ -8,6 +8,7 @@ class GUIButtonState (Enum):
 
 class GUIData:
     accel: StringVar = None
+    accelMax: StringVar = None
     accelPreset = None
     notePreset = None
     buttonText: StringVar = None
@@ -24,6 +25,9 @@ class GUIData:
     
     def getAccel(self) -> float:
         return float(self.accel.get())
+
+    def getAccelMax(self) -> float:
+        return float(self.accelMax.get())
 
     def getAccelPreset(self):
         if(self.accelPreset == None):

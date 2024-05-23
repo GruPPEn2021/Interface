@@ -68,6 +68,8 @@ class GUIView:
         '''Cria o componente da GUI relacionada ao acelerômetro'''
         frame = Frame(root)
         frame.grid(row=0, column=1, padx=5)
+
+        # Acelerometro
         label = Label(frame, text='Acelerometro')
         label.grid(row=0, column=0)
         self.data.accel = StringVar(frame, "0")
@@ -78,21 +80,34 @@ class GUIView:
             textvariable=self.data.accel
             )
         self.accel.grid(row=1, column=0)
+
+        # Máximo
+        labelMax = Label(frame, text='Acelerometro Máximo')
+        labelMax.grid(row=2, column=0)
+        self.data.accelMax = StringVar(frame, "0")
+        self.accelMax = Spinbox(frame, from_=0, to=500000,
+            #a linha a seguir foi comentada porque a validação em cada frame faz com que não seja possível por valores com vírgula
+            #validate='all', validatecommand=(frame.register(isFloat), '%P'),
+            increment=100, 
+            textvariable=self.data.accelMax
+            )
+        self.accelMax.grid(row=3, column=0)
+
         self.generateAccelPresetFrame(frame)
 
     def generateAccelPresetFrame(self, root):
         '''Cria o componente da GUI da lista de Presets de acelerômetro'''
         presetList = PresetListComponent(root,fileService=self.controller.fileService, presetList=self.controller.getAccelPresets(),
             dataSetter=self.data.setAccelPreset, component=AccelPresetComponent)
-        presetList.show(row=2, column=0)
+        presetList.show(row=4, column=0)
 
     def generateConnector(self, root):
         '''Cria os droplists de conexões bluetooth e conexões MIDI disponíveis'''
         frame = Frame(root)
         frame.grid(row=0, column=2)
 
-        #Bluetooth
-        label = Label(frame, text="Porta Bluetooth")
+        # Porta COM 
+        label = Label(frame, text="Porta COM")
         label.grid(row=0, column=0, columnspan=2, sticky="w")
 
         self.data.COMText = StringVar(root, "")

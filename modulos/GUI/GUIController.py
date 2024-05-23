@@ -1,4 +1,5 @@
 from math import floor
+from sys import maxsize
 from serial import SerialException
 from tkinter import Tk
 from modulos.GUI.GUIData import GUIButtonState
@@ -11,6 +12,7 @@ from modulos.GUI.GUIData import GUIData
 class GUIController:
     CHECKING_INTERVAL = 1
     TOUCH_NOTE_VELOCITY = 100
+    
 
     def __init__(self, eletronicModule: BaseEletronicModule, midiService: MidiService, fileService: FileService) -> None:
         self.eletronicModule = eletronicModule
@@ -88,12 +90,18 @@ class GUIController:
 
     def process(self):
         '''Função de uso interno da classe para processar a entrada de dados atual e agendar o novo processamento'''
-        eletronicData = self.eletronicModule.getData()
-        if(eletronicData != None):
-            self.processTouch(eletronicData)
-            self.processAccel(eletronicData)
-        # chama a si mesmo depois de um determinado período de tempo
-        self.scheduler = self.tk.after(self.CHECKING_INTERVAL, self.process)
+        try:
+            eletronicData = self.eletronicModule.getData()
+            if(eletronicData != None):
+                self.processTouch(eletronicData)
+                self.processAccel(eletronicData)
+            # chama a si mesmo depois de um determinado período de tempo
+            self.scheduler = self.tk.after(self.CHECKING_INTERVAL, self.process)
+        except Exception:
+            # Caso ocorra qualquer erro na hora de inicializar, reseta o botão e termina o processo
+            self.GUIData.setPlayButtonState(GUIButtonState.STOPED)
+            self.end()
+            raise
     
     def processTouch(self, eletronicData):
         '''Processa a informação de toque e giroscópio'''
@@ -125,12 +133,14 @@ class GUIController:
         NOTE = ACCEL_PRESET["nota"]
         ACCEL_NOTE_VELOCITY = 120
         ACCEL_NOTE_DURATION = 200 # em milisegundos
-        if(eletronicData["acelerometro"] >= self.GUIData.getAccel()) and self.allow_accel:
+        acelerometro = eletronicData["acelerometro"]
+        if self.allow_accel and ((self.GUIData.getAccelMax() >= acelerometro >= self.GUIData.getAccel()) or (-self.GUIData.getAccel() >= acelerometro >= -self.GUIData.getAccelMax())):
+            print(f"accel: {acelerometro}; guiAccel: {self.GUIData.getAccel()}; accelMax: {self.GUIData.getAccelMax()}")
             self.send(CHANNEL, NOTE, ACCEL_NOTE_VELOCITY)
             print(f"GUI: {self.GUIData.getAccel()}\nDisp: {eletronicData['acelerometro']}")
             self.tk.after(ACCEL_NOTE_DURATION, lambda: self.send(CHANNEL, NOTE, ACCEL_NOTE_VELOCITY, False))
             self.allow_accel = False
-            self.tk.after(ACCEL_NOTE_DURATION, lambda: self.setPermiteAccelTrue(self))
+            self.tk.after(ACCEL_NOTE_DURATION, lambda: self.setPermiteAccelTrue())
     
     def setPermiteAccelTrue(self):
         '''

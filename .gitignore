@@ -23,3 +23,8 @@ output/*
 
 #ignora arquivos do tipo desktop.ini
 *desktop.ini
+
+#ignora venv
+pyvenv.cfg 
+Scripts/*
+Lib/*

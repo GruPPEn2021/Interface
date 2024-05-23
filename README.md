@@ -6,29 +6,37 @@
 
 ### Instalando Dependências
 
-É necessário python 3.7 ou posterior para executar o programa.<br>
-Para instalar as dependências do projeto, garanta que a versão do pip seja 22.0.4 ou posterior e rode o arquivo [install_dependencies.sh](install_dependencies.sh) no terminal.
+É necessário python >= 3.7 e <= 3.10 para executar o programa.<br>
+Para instalar as dependências do projeto, garanta que a versão do pip seja 22.0.4 ou posterior e instale as dependências rodando os seguintes comandos no terminal.
+
+```shell
+pip install mido
+pip install serial
+pip install pyserial
+pip install python-rtmidi
+```
 
 ### Executando a Aplicação
 
-Para executar a aplicação, adicione as configurações necessárias ao arquivo [config.json](interface/config.json),
+Para executar a aplicação, adicione as configurações necessárias ao arquivo [config.json](config.json),
 o arquivo tem o seguinte formato:
 
 ```json
 {
   "ambiente_eletronico": "teste",
-  "ambiente_midi": "producao"
+  "ambiente_midi": "producao",
+  "ambiente_file_service": "dev"
 }
 ```
 
 `ambiente_eletronico` e `ambiente_midi` aceitam os valores `"teste"` ou `"producao"`.  
 O valor `"teste"` significa que aquele componente vai ser executado como um Mock que simula o comportamento real.  
-O valor `"producao"` significa que aquele modulo vai executar utilizando a aquele componente.
+O valor `"producao"` significa que aquele modulo vai executar utilizando a aquele componente.  
+Já `ambiente_file_service` aceita os valores `dev` ou `producao`, isso diz respeito a onde o programa vai procurar os arquivos salvos (i.e. na própria pasta quando estiver usando `dev` e em AppData quando usar `producao`). Utilize `dev` enquanto programar a interface e `producao` quando gerar um executável com o instalador.
 
-Em seguida, navegue para a pasta `interface` e execute o arquivo [main.py](interface/main.py) :<br>
+Em seguida, execute o arquivo [main.py](main.py) :<br>
 
 ```shell
-cd ./interface
 python main.py
 ```
 
@@ -42,10 +50,9 @@ python main.py
 pip install auto-py-to-exe
 ```
 
-Para executar auto-py-to-exe após a intalação,apenas navegue para a pasta `interface` execute o comando `auto-py-to-exe`:
+Para executar auto-py-to-exe após a intalação, apenas  execute o comando `auto-py-to-exe`:
 
 ```shell
-cd ./interface
 auto-py-to-exe
 ```
 
@@ -55,12 +62,12 @@ Será aberto uma interface onde é possível configurar as opções para a build
 
 Em cada campo, siga as instruções
 
-- Script location: Escolha o arquivo [main.py](interface/main.py) na pasta [interface](interface).
+- Script location: Escolha o arquivo [main.py](main.py) na pasta [interface](interface).
 - OneFile: Escolha `OneDirectory` (a opção `OneFile` é problemática com arquivos de imagens e .json, o formato como são guardadas as informações).
 - Icon: Escolha a logo do Gruppen (Deve ser um arquivo .ico 64x64).
 - Additional Files:
-  - adicione o arquivo [config.json](interface/config.json) clicando em `Add Files`, deixe o padrão `.` como local para enviar o arquivo
-  - adicione a pasta [resources](interface/resources) clicando em `Add Folders`, como local para enviar escolha `resources/`.
+  - adicione o arquivo [config.json](config.json) clicando em `Add Files`, deixe o padrão `.` como local para enviar o arquivo
+  - adicione a pasta [resources](resources) clicando em `Add Folders`, como local para enviar escolha `resources/`.
 
 Por fim gere um executável clicando no botão `Convert .py to .exe` e uma pasta output será gerada, dentro de `main` terá o executável `main.exe`.
 
